@@ -1,63 +1,29 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Gambar Fullscreen – Anti-Download (Deterrent)</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fullscreen Image</title>
   <style>
-    /* Layout dasar */
-    html, body { height: 100%; margin: 0; background: #000; }
-
-    /* Gambar sebagai background agar tidak terlihat sebagai <img> yang mudah di-klik/di-simpan */
-    .fullscreen-bg {
-      position: fixed; inset: 0;
-      background: #000 url("IMG_20250901_102658.png") center / cover no-repeat;
-      -webkit-user-drag: none; user-select: none;
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
     }
-
-    /* Layer transparan untuk blok interaksi (menahan long-press/klik kanan di mobile & desktop) */
-    .interaction-blocker { position: fixed; inset: 0; background: transparent; }
-
-    /* Watermark opsional (tidak wajib) */
-    .wm { position: fixed; right: 12px; bottom: 12px; opacity: .45; color: #fff;
-          font: 500 12px system-ui, -apple-system, Segoe UI, Roboto, sans-serif; pointer-events: none; }
-
-    /* Nonaktifkan drag image di seluruh halaman */
-    .no-drag, .no-drag * { -webkit-user-drag: none; user-select: none; }
+    .bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      user-select: none;    /* cegah copy */
+      pointer-events: none; /* cegah klik kanan / drag */
+    }
   </style>
 </head>
-<body class="no-drag" oncontextmenu="return false">
-  <!-- Ganti URL gambar di bawah ini dengan punyamu -->
-  <div class="IMG_20250901_102658.png" aria-label="Gambar layar penuh"></div>
-
-  <!-- Blok interaksi di atas gambar -->
-  <div class="interaction-blocker" tabindex="-1"></div>
-
-  <!-- Watermark opsional (hapus bila tidak perlu) -->
-  <div class="wm">© vicocloud.com</div>
-
-  <script>
-    // Cegah pintasan umum untuk simpan/lihat sumber/print
-    document.addEventListener('keydown', (e) => {
-      const key = e.key.toLowerCase();
-      if ((e.ctrlKey || e.metaKey) && ['s','u','p'].includes(key)) e.preventDefault(); // Ctrl/Cmd+S, +U, +P
-      if (key === 'printscreen') e.preventDefault();
-    });
-
-    // Cegah drag & drop, dan gesture pinch-save di beberapa browser
-    ['dragstart','gesturestart','selectstart'].forEach(evt =>
-      document.addEventListener(evt, (e) => e.preventDefault(), { passive: false })
-    );
-
-    // Opsional: cegah klik kanan via JS tambahan (selain atribut body)
-    document.addEventListener('contextmenu', (e) => e.preventDefault());
-  </script>
-
-  <!--
-    Catatan penting:
-    - Tidak ada cara 100% aman untuk mencegah download (orang tetap bisa screenshot/devtools).
-    - Ini hanya "pencegah" (deterrent). Untuk perlindungan lebih, kombinasikan dengan watermark,
-      blur dinamis, atau layanan berbasis streaming/DRM.
-  -->
+<body oncontextmenu="return false">
+  <img src="IMG_20250901_102658.png" alt="Fullscreen" class="bg">
 </body>
 </html>
